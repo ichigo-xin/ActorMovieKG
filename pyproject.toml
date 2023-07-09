@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "actormoviekg"
+version = "0.1.0"
+description = "演员电影知识图谱"
+authors = ["ichigo-xin <1219869429@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sqlalchemy = "^2.0.18"
+pymysql = "^1.1.0"
+py2neo = "^2021.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

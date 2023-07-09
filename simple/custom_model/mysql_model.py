@@ -1,5 +1,5 @@
 """实体类文件."""
-from sqlalchemy import Column, String, Text
+from sqlalchemy import String, Text, Integer
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -10,6 +10,7 @@ class Base(DeclarativeBase):
 
 
 class Actor(Base):
+
     __tablename__ = 'actor'
     actor_id: Mapped[int] = mapped_column(primary_key=True)
     actor_bio: Mapped[str] = mapped_column(Text)
@@ -41,3 +42,22 @@ class Movie(Base):
     movie_length: Mapped[str] = mapped_column(String(100))
     movie_achiem: Mapped[str] = mapped_column(Text)
 
+
+class ActorToMovie(Base):
+    __tablename__ = 'actor_movie_id'
+    actor_movie_id: Mapped[int] = mapped_column(primary_key=True)
+    actor_id: Mapped[int] = mapped_column(Integer)
+    movie_id: Mapped[int] = mapped_column(Integer)
+
+
+class Genre(Base):
+    __tablename__ = 'genre'
+    genre_id: Mapped[int] = mapped_column(primary_key=True)
+    genre_name: Mapped[str] = mapped_column(String(100))
+
+
+class MovieToGenre(Base):
+    __tablename__ = 'movie_genre_id'
+    movie_genre_id: Mapped[int] = mapped_column(primary_key=True)
+    movie_id: Mapped[int] = mapped_column(primary_key=True)
+    genre_id: Mapped[int] = mapped_column(primary_key=True)
