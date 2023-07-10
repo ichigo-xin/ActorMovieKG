@@ -50,32 +50,42 @@ class ActorMovieKG:
         self.session = Session(self.engine)
 
     def build_graph(self):
-        self.build_actor()
-        self.build_movie()
+        # self.build_actor()
+        # self.build_movie()
         self.build_rel()
 
     def build_movie(self):
         stmt_movie = select(mysql_model.Movie)
         for actor_movie in self.session.scalars(stmt_movie):
             neo4j_movie = covertor_movie(actor_movie)
-            self.repo.create(neo4j_movie)
+            self.repo.save(neo4j_movie)
+        print('build movie success')
 
     def build_actor(self):
         stmt_actor = select(mysql_model.Actor)
         for actor_mysql in self.session.scalars(stmt_actor):
             neo4j_actor = covertor_actor(actor_mysql)
-            self.repo.create(neo4j_actor)
+            self.repo.save(neo4j_actor)
+        print('build actor success')
 
     def build_rel(self):
         stmt = select(mysql_model.ActorToMovie)
         for element in self.session.scalars(stmt):
-            actor = self.repo.match(neo4j_model.Actor).where(id=element.actor_id).first()
-            movie = self.repo.match(neo4j_model.Movie).where(id=element.movie_id).first()
+            actor = self.repo.match(neo4j_model.Actor).where(actor_id=element.actor_id).first().__node__
+            movie = self.repo.match(neo4j_model.Movie).where(movie_id=element.movie_id).first().__node__
             relation_ship = Relationship(actor, "ACTED_IN", movie)
             self.repo.create(relation_ship)
+        print('build relation success')
+
+    def test(self):
+        actor = self.repo.match(neo4j_model.Actor).where(actor_id=3).first().__node__
+        movie = self.repo.match(neo4j_model.Movie).where(movie_id=6493).first().__node__
+        relation_ship = Relationship(actor, "ACTED_IN", movie)
+        self.repo.create(relation_ship)
 
 
 if __name__ == '__main__':
     kg = ActorMovieKG()
+    # kg.test()
     kg.build_graph()
     print("建立知识图谱完成")

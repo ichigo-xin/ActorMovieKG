@@ -12,7 +12,7 @@ class KGClient:
         cypher = """CALL gds.graph.project(
             'ActorMovieGraph',
             ['Actor', 'Movie'],
-            'MovieGraph'
+            'ACTED_IN'
         );
         """
         self.repo.graph.run(cypher)
@@ -20,17 +20,18 @@ class KGClient:
     def query_similarity(self, name: str):
         """找出演员中的紧密程度"""
         cypher = f"""CALL gds.nodeSimilarity.stream('ActorMovieGraph')
-        YIELD node1, node2, similarity
+        YIELD node1, node2, similarity 
         WITH gds.util.asNode(node1) AS actor1, gds.util.asNode(node2) AS actor2, similarity
-        WHERE actor1.name = '{name}'
-        RETURN actor1.name AS actor1, actor2.name AS actor2, similarity
+        WHERE actor1.actor_chName = '{name}'
+        RETURN actor1.actor_chName, actor2.actor_chName, similarity
         ORDER BY similarity DESCENDING
         """
-        self.repo.graph.run(cypher).data()
+        result = self.repo.graph.run(cypher).data()
+        print(result)
 
     def query_all_movies(self, name: str):
         actor = self.repo.match(Actor).where(
-            (Actor.actor_chName == name) | (Actor.actor_foreName == name)
+            actor_chName=name
         ).first()
         if actor is None:
             raise ValueError('input error!')
@@ -41,5 +42,5 @@ class KGClient:
 if __name__ == '__main__':
     kg_client = KGClient()
     # kg_client.build_graph()
-    kg_client.query_all_movies("周星驰")
-    kg_client.query_similarity("王宝强")
+    # kg_client.query_all_movies("张家辉")
+    kg_client.query_similarity("鲍方")

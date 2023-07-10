@@ -44,7 +44,7 @@ class Movie(Base):
 
 
 class ActorToMovie(Base):
-    __tablename__ = 'actor_movie_id'
+    __tablename__ = 'actor_to_movie'
     actor_movie_id: Mapped[int] = mapped_column(primary_key=True)
     actor_id: Mapped[int] = mapped_column(Integer)
     movie_id: Mapped[int] = mapped_column(Integer)

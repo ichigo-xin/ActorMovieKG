@@ -2,7 +2,7 @@ from py2neo.ogm import Model, Property, RelatedFrom, RelatedTo
 
 
 class Movie(Model):
-    __primarylable__ = 'Movie'
+    __primarylabel__ = 'Movie'
 
     movie_id = Property()
     movie_bio = Property()
@@ -24,7 +24,7 @@ class Movie(Model):
 
 class Actor(Model):
     # 标签
-    __primarylable__ = "Actor"
+    __primarylabel__ = "Actor"
 
     # 属性
     actor_id = Property()
