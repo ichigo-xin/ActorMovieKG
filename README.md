@@ -7,3 +7,9 @@
 simple的示例使用pymysql和sqlalchemy访问mysql，使用py2neo访问neo4j。
 
 目前做的简单示例，后续可能会结合es进行补充等。
+
+
+
+## 环境安装
+
+执行poetry install命令
